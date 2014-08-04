@@ -2,6 +2,9 @@
 *.pyc
 local_settings.py
 
+.project
+.pydevproject
+
 # Third party build files
 *.egg-info/
 
