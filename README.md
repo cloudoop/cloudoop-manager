@@ -1,4 +1,4 @@
-cloudoop-dashboard
+cloudoop-manager
 ==================
 
-Cloudoop Dashboard
+Cloudoop Manager
