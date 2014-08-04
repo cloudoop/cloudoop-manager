@@ -1,0 +1,25 @@
+.navbar-default{
+	background-color: #4e9a06;
+	border-color: #e7e7e7;
+}
+
+.navbar-default .navbar-collapse{
+	border-color: #e7e7e7;
+	background-color: #f8f8f8;
+}
+
+.nav>li>a {
+	color: #555;
+}
+
+.nav>li>a:hover, .nav>li>a:focus{
+	text-decoration: none;
+	background-color: #7DC262;
+	color: #000;
+}
+
+.nav .open>a, .nav .open>a:hover, .nav .open>a:focus{
+	background-color: #7DC262;
+	border-color: #428bca;
+
+}
