@@ -1,1 +1,0 @@
-../cloudoopmanager/manage.py
