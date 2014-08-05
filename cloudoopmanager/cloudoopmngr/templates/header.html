@@ -7,7 +7,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="{% url 'cloudoopmngr:index' %}" style="padding-top:5px"><img src="{% static "images/cloudoop-w.png" %}"></a>
+    <a class="navbar-brand" href="{% url 'cloudoopmngr:index' %}" style="padding-top:5px; color: #fff;"><img src="{% static "images/cloudoop-w.png" %}"> manager</a>
 </div>
 <!-- /.navbar-header -->
 
@@ -212,7 +212,7 @@
             <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
             </li>
             <li class="divider"></li>
-            <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+            <li><a href="{% url 'cloudoopmngr:login'%}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
             </li>
         </ul>
         <!-- /.dropdown-user -->
