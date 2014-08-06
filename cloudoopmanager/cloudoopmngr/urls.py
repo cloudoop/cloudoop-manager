@@ -14,5 +14,9 @@ urlpatterns = patterns('',
     url(r'^typography/$', views.typography, name="typography"),
     url(r'^notifications/$', views.notifications, name="notifications"),
     url(r'^grid/$', views.grid, name="grid"),
-    
+    url(r'^adddn/$', views.add_datanode, name='adddn'),
+    url(r'^view-datanodes/$', views.view_datanodes, name='viewdns'),
+    url(r'^infr-overview/$', views.infrastructure_overview, name='infroverview'),
+    url(r'^delete/(?P<datanode_id>\d+)$', views.delete_datanode, name='deldn'),
+                  
 )
