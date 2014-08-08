@@ -73,5 +73,9 @@ def infrastructure_overview(request):
 
 def delete_datanode(request, datanode_id):
     datanode = get_object_or_404(DataNode, pk=datanode_id)
+    hds = datanode.hds.all()
+    for hd in hds:
+        hd.status = HD.AVAILABLE
+        hd.save()
     datanode.delete()
     return HttpResponseRedirect('/view-datanodes/') 
