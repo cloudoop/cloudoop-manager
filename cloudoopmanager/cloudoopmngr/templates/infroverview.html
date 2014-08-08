@@ -41,7 +41,13 @@
                                         <ul>
                                         {% for hd in hds %}
                                             {% if hd.host.hostname == host.hostname %}
-                                               <li> {{ hd.path}} ({{ hd.size }} TB)</li>
+                                               <li> {{ hd.path}} ({{ hd.size }} TB)   
+                                                {% if hd.status == 'AV' %}
+                                                        <span class="label label-success">Available</span>
+                                                {% else %}
+                                                        <span class="label label-default">Occupied</span>
+                                                {% endif %}
+                                                </li>
                                             {% endif %}
                                         {% endfor %}
                                         </ul>
@@ -81,7 +87,7 @@
 					    			<td>
 					    				<ul>
 						    				{% for hd in datanode.hds.all %}
-						    					<li>{{ hd.host.hostname }}:{{ hd.path}} ({{ hd.size }} TB)</li>
+						    					<li>{{ hd.host.hostname }}:{{ hd.path}} ({{ hd.size }} TB) </li>
 						    				{% endfor%}
 					    				</ul>
 					    			</td>
