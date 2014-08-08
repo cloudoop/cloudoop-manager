@@ -68,8 +68,7 @@ def view_datanodes(request):
 def infrastructure_overview(request):
     hosts = Host.objects.all()
     datanodes = DataNode.objects.all()
-    hds = HD.objects.all()
-    return render(request, 'infroverview.html', {'datanodes':datanodes,'hosts':hosts, 'hds':hds})
+    return render(request, 'infroverview.html', {'datanodes':datanodes,'hosts':hosts})
 
 def delete_datanode(request, datanode_id):
     datanode = get_object_or_404(DataNode, pk=datanode_id)

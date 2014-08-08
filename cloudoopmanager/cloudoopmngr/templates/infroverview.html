@@ -39,16 +39,16 @@
                                     <td>{{ host.ip}}</td>
                                     <td>
                                         <ul>
-                                        {% for hd in hds %}
-                                            {% if hd.host.hostname == host.hostname %}
-                                               <li> {{ hd.path}} ({{ hd.size }} TB)   
+                                        {% for hd in host.hd_set.all %}
+                                            
+                                                <li> {{ hd.path}} ({{ hd.size }} TB)
                                                 {% if hd.status == 'AV' %}
                                                         <span class="label label-success">Available</span>
                                                 {% else %}
                                                         <span class="label label-default">Occupied</span>
                                                 {% endif %}
                                                 </li>
-                                            {% endif %}
+                                            
                                         {% endfor %}
                                         </ul>
                                     </td>
