@@ -11,4 +11,4 @@ local_settings.py
 # compiled locales
 *.mo
 
-*.sqlite3
+db.sqlite3
