@@ -65,16 +65,23 @@ def view_datanodes(request):
     datanodes = DataNode.objects.all()
     return render(request, 'alldatanodes.html', {'datanodes':datanodes})
 
+def view_hosts(request):
+    hosts = Host.objects.all()
+    hds = HD.objects.all()
+    return render(request, 'allhosts.html', {'hosts':hosts, 'hds':hds})
+
 def infrastructure_overview(request):
     hosts = Host.objects.all()
     datanodes = DataNode.objects.all()
-    return render(request, 'infroverview.html', {'datanodes':datanodes,'hosts':hosts})
+    hds = HD.objects.all()
+    return render(request, 'infroverview.html', {'datanodes':datanodes,'hosts':hosts, 'hds':hds})
 
 def delete_datanode(request, datanode_id):
     datanode = get_object_or_404(DataNode, pk=datanode_id)
-    hds = datanode.hds.all()
-    for hd in hds:
-        hd.status = HD.AVAILABLE
-        hd.save()
     datanode.delete()
-    return HttpResponseRedirect('/view-datanodes/') 
+    return HttpResponseRedirect('/view-datanodes/')
+
+def delete_host(request, host_id):
+    host = get_object_or_404(Host, pk=host_id)
+    host.delete()
+    return HttpResponseRedirect('/view-hosts/')
