@@ -20,4 +20,5 @@ urlpatterns = patterns('',
     url(r'^delete/(?P<datanode_id>\d+)$', views.delete_datanode, name='deldn'),
     url(r'^delete-host/(?P<host_id>\d+)$', views.delete_host, name='delhost'),
     url(r'^view-hosts/$', views.view_hosts, name='viewhosts'),
+    
 )

@@ -1,17 +1,11 @@
 from django import forms
-from cloudoopmngr.models import DataNode
+from cloudoopmngr.models import DataNode, Host, HD
 
 class NewDataNodeForm(forms.ModelForm):
  
    class Meta:
       model = DataNode
 
-class DataNodeForm(forms.ModelForm):
-    campus = forms.ModelChoiceField(queryset=models.Campus.objects.all())
-    school = forms.ModelChoiceField(queryset=models.School.objects.none()) # Need to populate this using jquery
-    centre = forms.ModelChoiceField(queryset=models.Centre.objects.none()) # Need to populate this using jquery
 
-    class Meta:
-        model = models.Center
-
-        fields = ('campus', 'school', 'centre')
+class CreateDataNodeForm(forms.Form):
+    dnhostname = forms.CharField(label='Datanode Hostname', max_length=60)

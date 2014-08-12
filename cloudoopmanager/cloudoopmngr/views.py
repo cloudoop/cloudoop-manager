@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from cloudoopmngr.models import DataNode, Host, HD
-from forms import NewDataNodeForm
+from forms import NewDataNodeForm, CreateDataNodeForm
 from django.http import HttpResponseRedirect
 from django.core.context_processors import csrf
+from django.db.models import Min, Count
 
 # Create your views here.
 
@@ -42,33 +43,13 @@ def notifications(request):
 def grid(request):
     return render(request,'grid.html',)
 
-def add_datanode(request):
-    if request.POST:
-        form = NewDataNodeForm(request.POST)
-        if form.is_valid():
-            form.save()
-            for hd in form.cleaned_data['hds']:
-                hd.status=HD.OCCUPIED
-                hd.save()
-            return HttpResponseRedirect('/view-datanodes/')
-    else:
-        form = NewDataNodeForm()
-     
-    args = {}
-    args.update(csrf(request))
-    
-    args['form'] = form
- 
-    return render(request, 'adddatanode.html', args)
-
 def view_datanodes(request):
     datanodes = DataNode.objects.all()
     return render(request, 'alldatanodes.html', {'datanodes':datanodes})
 
 def view_hosts(request):
     hosts = Host.objects.all()
-    hds = HD.objects.all()
-    return render(request, 'allhosts.html', {'hosts':hosts, 'hds':hds})
+    return render(request, 'allhosts.html', {'hosts':hosts})
 
 def infrastructure_overview(request):
     hosts = Host.objects.all()
@@ -88,3 +69,46 @@ def delete_host(request, host_id):
     host = get_object_or_404(Host, pk=host_id)
     host.delete()
     return HttpResponseRedirect('/view-hosts/')
+
+def _find_host_available():
+    ref_hds = -1
+    hosts_available = Host.objects.filter(hd__status=HD.AVAILABLE).distinct()
+    for host in hosts_available:
+        av_hds = HD.objects.filter(status=HD.AVAILABLE,host=host.pk).count()
+        if av_hds > ref_hds:
+            ref_hds = av_hds
+            selected_host = host
+    return selected_host
+
+def _get_first_hd_in_host(host):
+    hd = HD.objects.filter(host=host.pk,status=HD.AVAILABLE).first()
+    return hd
+
+def add_datanode(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = CreateDataNodeForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            host = _find_host_available()
+            hd = _get_first_hd_in_host(host)
+            dn = DataNode(hostname=form.cleaned_data['dnhostname'],host=host)
+            dn.save()
+            dn.hds.add(hd)
+            hd.status=HD.OCCUPIED
+            hd.save()
+            # redirect to a new URL:
+            return HttpResponseRedirect('/view-datanodes/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = CreateDataNodeForm()
+
+    args = {}
+    args.update(csrf(request))
+    
+    args['form'] = form
+ 
+    return render(request, 'adddatanode.html', args)
