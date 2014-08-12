@@ -18,5 +18,6 @@ urlpatterns = patterns('',
     url(r'^view-datanodes/$', views.view_datanodes, name='viewdns'),
     url(r'^infr-overview/$', views.infrastructure_overview, name='infroverview'),
     url(r'^delete/(?P<datanode_id>\d+)$', views.delete_datanode, name='deldn'),
-                  
+    url(r'^delete-host/(?P<host_id>\d+)$', views.delete_host, name='delhost'),
+    url(r'^view-hosts/$', views.view_hosts, name='viewhosts'),
 )
