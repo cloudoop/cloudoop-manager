@@ -158,8 +158,7 @@ def add_host(request):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            print form
-#            form.save()
+            form.save()
             # redirect to a new URL:
             return HttpResponseRedirect('/view-hosts/')
 
