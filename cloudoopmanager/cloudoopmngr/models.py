@@ -2,11 +2,17 @@ from django.db import models
 
 # Create your models here.
 
+class Rack (models.Model):
+    name = models.CharField(max_length=60, unique=True)
+    def __unicode__(self):
+        return self.name
+
 class Host (models.Model):
     hostname = models.CharField(max_length=60, unique=True)
     mem = models.IntegerField()
     os = models.CharField(max_length=20)
     ip = models.GenericIPAddressField(protocol='IPv4')
+    rack = models.ForeignKey(Rack)
     def __unicode__(self):
         return self.hostname
     

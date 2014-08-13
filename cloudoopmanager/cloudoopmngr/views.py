@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from cloudoopmngr.models import DataNode, Host, HD
-from forms import NewDataNodeForm, CreateDataNodeForm
+from cloudoopmngr.models import DataNode, Host, HD, Rack
+from forms import NewDataNodeForm, CreateDataNodeForm,CreatePullDataNodesForm
 from django.http import HttpResponseRedirect
 from django.core.context_processors import csrf
 from django.db.models import Min, Count
@@ -52,9 +52,10 @@ def view_hosts(request):
     return render(request, 'allhosts.html', {'hosts':hosts})
 
 def infrastructure_overview(request):
+    racks = Rack.objects.all()
     hosts = Host.objects.all()
     datanodes = DataNode.objects.all()
-    return render(request, 'infroverview.html', {'datanodes':datanodes,'hosts':hosts})
+    return render(request, 'infroverview.html', {'datanodes':datanodes,'hosts':hosts, 'racks':racks})
 
 def delete_datanode(request, datanode_id):
     datanode = get_object_or_404(DataNode, pk=datanode_id)
@@ -92,13 +93,7 @@ def add_datanode(request):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            host = _find_host_available()
-            hd = _get_first_hd_in_host(host)
-            dn = DataNode(hostname=form.cleaned_data['dnhostname'],host=host)
-            dn.save()
-            dn.hds.add(hd)
-            hd.status=HD.OCCUPIED
-            hd.save()
+            _create_datanode(form.cleaned_data['dnhostname'])
             # redirect to a new URL:
             return HttpResponseRedirect('/view-datanodes/')
 
@@ -112,3 +107,41 @@ def add_datanode(request):
     args['form'] = form
  
     return render(request, 'adddatanode.html', args)
+
+def create_datanodes(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = CreatePullDataNodesForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            hostname_pattern=form.cleaned_data['hostname_pattern']
+            domain=form.cleaned_data['domain']
+            num_dns=form.cleaned_data['num_dns']
+            for i in range(num_dns):
+                hostname = hostname_pattern + str(i+1).zfill(2) + '.' + domain
+                print hostname
+                _create_datanode(hostname)
+            # redirect to a new URL:
+            return HttpResponseRedirect('/view-datanodes/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = CreatePullDataNodesForm()
+
+    args = {}
+    args.update(csrf(request))
+    
+    args['form'] = form
+ 
+    return render(request, 'create_datanodes.html', args)
+
+def _create_datanode(hostname):
+    host = _find_host_available()
+    hd = _get_first_hd_in_host(host)
+    dn = DataNode(hostname=hostname,host=host)
+    dn.save()
+    dn.hds.add(hd)
+    hd.status=HD.OCCUPIED
+    hd.save()

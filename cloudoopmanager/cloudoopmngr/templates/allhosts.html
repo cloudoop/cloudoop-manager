@@ -23,6 +23,7 @@
                         <thead>
                             <tr>
                                 <th>Hostname</th>
+                                <th>Rack</th>
                                 <th>Mem (GB)</th>
                                 <th>OS</th>
                                 <th>IP</th>
@@ -34,6 +35,7 @@
                             {% for host in hosts %}
                                 <tr>
                                     <td>{{ host.hostname }}</td>
+                                    <td>{{ host.rack }}
                                     <td>{{ host.mem}}</td>
                                     <td>{{ host.os}}</td>
                                     <td>{{ host.ip}}</td>
