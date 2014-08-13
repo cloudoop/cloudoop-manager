@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from cloudoopmngr.models import DataNode, Host, HD, Rack
-from forms import NewDataNodeForm, CreateDataNodeForm,CreatePullDataNodesForm
+from forms import NewDataNodeForm, CreateDataNodeForm,CreatePullDataNodesForm, NewHostForm
 from django.http import HttpResponseRedirect
 from django.core.context_processors import csrf
 from django.db.models import Min, Count
@@ -105,7 +105,10 @@ def add_datanode(request):
     args.update(csrf(request))
     
     args['form'] = form
- 
+    
+    num_hosts_available = Host.objects.filter(hd__status=HD.AVAILABLE).distinct().count()
+    args['num_hosts_available']=num_hosts_available
+    
     return render(request, 'adddatanode.html', args)
 
 def create_datanodes(request):
@@ -121,7 +124,6 @@ def create_datanodes(request):
             num_dns=form.cleaned_data['num_dns']
             for i in range(num_dns):
                 hostname = hostname_pattern + str(i+1).zfill(2) + '.' + domain
-                print hostname
                 _create_datanode(hostname)
             # redirect to a new URL:
             return HttpResponseRedirect('/view-datanodes/')
@@ -134,7 +136,9 @@ def create_datanodes(request):
     args.update(csrf(request))
     
     args['form'] = form
- 
+    
+    num_hosts_available = Host.objects.filter(hd__status=HD.AVAILABLE).distinct().count()
+    args['num_hosts_available']=num_hosts_available
     return render(request, 'create_datanodes.html', args)
 
 def _create_datanode(hostname):
@@ -145,3 +149,27 @@ def _create_datanode(hostname):
     dn.hds.add(hd)
     hd.status=HD.OCCUPIED
     hd.save()
+    
+def add_host(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = NewHostForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            print form
+#            form.save()
+            # redirect to a new URL:
+            return HttpResponseRedirect('/view-hosts/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = NewHostForm()
+
+    args = {}
+    args.update(csrf(request))
+    
+    args['form'] = form
+    
+    return render(request, 'addhost.html', args)

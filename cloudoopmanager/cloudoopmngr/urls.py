@@ -21,5 +21,6 @@ urlpatterns = patterns('',
     url(r'^delete-host/(?P<host_id>\d+)$', views.delete_host, name='delhost'),
     url(r'^view-hosts/$', views.view_hosts, name='viewhosts'),
     url(r'^create-datanodes/$', views.create_datanodes, name='create-datanodes'),
+    url(r'^addhost/$', views.add_host, name='addhost'),
     
 )

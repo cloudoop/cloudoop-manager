@@ -4,31 +4,20 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Add DataNode</h1>
+        <h1 class="page-header">Add new Host to infrastructure</h1> 
     </div>
     <!-- /.col-lg-12 -->
-<div class="row">
-    <div class="col-lg-8">
-	    {% if num_hosts_available >= 1 %}
-	    	
-		    <form action="/adddn/" method="post" role="form">
-			    {% csrf_token %}
-			    <table class="table table-striped table-condensed" >
-			    	{{ form.as_table }}
-		    	</table>
-				<button type="submit" class="btn btn-default">Save</button>
-			</form>
-
-		{% else %}
-			<div class="alert alert-danger" role="alert">
-				WARNING: There are no hosts available to add a single Datanode. </span>
-			</div>
-		{% endif %}
-	</div>
 </div>
-
-
-
+<div class="row">
+    <div class="col-lg-8">	    	
+	    <form action="/addhost/" method="post" role="form">
+		    {% csrf_token %}
+		    <table class="table table-striped table-condensed" >
+		    	{{ form.as_table }}
+	    	</table>
+			<button type="submit" class="btn btn-default">Save</button>
+		</form>
+	</div>
 </div>
 <!-- /.row -->
 

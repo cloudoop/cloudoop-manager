@@ -5,7 +5,20 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">DataNodes</h1>
+        <h3 class="page-header">Datanodes 
+            <div style="float: right;">
+                <button type="button" class="btn btn-primary btn-xs">
+                    <a href="{% url 'cloudoopmngr:adddn'%}" style="color: #fff">
+                        <i class="fa fa-plus-circle fa-fw"></i> Add Single Datanode
+                    </a>
+                </button> 
+                <button type="button" class="btn btn-primary btn-xs">
+                    <a href="{% url 'cloudoopmngr:create-datanodes'%}" style="color: #fff">
+                        <i class="fa fa-cubes fa-fw"></i> Create Pool Datatanodes
+                    </a>
+                </button>
+            </div>
+        </h3>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -40,7 +53,7 @@
 						    				{% endfor%}
 					    				</ul>
 					    			</td>
-					    			<td><a href="{% url 'cloudoopmngr:deldn' datanode.pk %}" role="button" class="btn btn-success">Delete</a></td>
+					    			<td><a href="{% url 'cloudoopmngr:deldn' datanode.pk %}" role="button" class="btn btn-success btn-xs">Delete</a></td>
 					    		</tr>
 							{% endfor %}
 					    </tbody>
